@@ -17,5 +17,7 @@ where c.id = ?`, [chirp_id])
 
 export default { createChirp, getChirps, getChirpsForUser, updateChirp, deleteChirp, getChirpDetails }
 
+//server side matching url preferences
+
 //thumbs up
 //query file, 

@@ -51,9 +51,9 @@ chirpsRouter.put("/:bean", async (req, res) => {
   }
 }); //bean=chirpId variable
 
-chirpsRouter.delete("/:cello", async (req, res) => {
+chirpsRouter.delete("/", async (req, res) => {
   try {
-    let id = Number(req.params.cello);
+    let id = Number(req.body.id);
     await dbChirps.deleteChirp(id);
     res.status(200).json({ message: "HELL YEAH BRUTHER" });
   } catch (error) {
