@@ -29,13 +29,14 @@ chirpsRouter.post("/", async (req, res) => {
   try {
     let body = req.body.body;
     let location = req.body.location;
-    const results = await dbChirps.createChirp(body, location);
+    let user = req.body.user;
+    const results = await dbChirps.createChirp(body, location, user);
     res
       .status(200)
       .json({ message: "HELL YEAH BRUTHER", id: results.insertId }); //DOM kick the user back to the page
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "No chirp4u" });
+    res.status(500).json({ message: `${error}` });
   }
 });
 

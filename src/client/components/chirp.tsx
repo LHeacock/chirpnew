@@ -1,16 +1,30 @@
 import { Link } from "react-router-dom";
-import { IChirps } from "../types";
-import React from "react";
+import { IChirps, IUsers } from "../types";
+import React, { useEffect, useState } from "react";
 
 interface AppProps {}
+
+let intialList: IUsers[];
 
 const Chirp = (props: { chrips: IChirps; isAdmin: boolean }) => {
   let chirp = props.chrips;
   let linkPath = `/chirps/details/${chirp.id}`;
+  const [userList, setUsersList] = useState(intialList);
 
-  async function deleteChirp(e: any) {
-    let chirpId = e.target.parentNode.id;
+  useEffect(() => {
+    fetch("http://localhost:3000/api/users")
+      .then((res) => res.json())
+      .then((data) => {
+        let handles = data.map((x: IUsers) => {
+          return x;
+        });
+        setUsersList(handles);
+      })
+      .catch((e) => console.log("[fetch erorr]", e));
+  }, []);
 
+  async function deleteChirp(chirpIdToDelete: number) {
+    let chirpId = chirpIdToDelete;
     try {
       const res = await fetch("http://localhost:3000/api/chirps", {
         method: "DELETE",
@@ -35,14 +49,19 @@ const Chirp = (props: { chrips: IChirps; isAdmin: boolean }) => {
   }
 
   function makeChirp() {
+    console.log(userList);
     return (
       <div id={chirp.id.toString()} className="border col-md-3">
         <Link style={{ textDecoration: "none" }} to={linkPath}>
+          {userList && (
+            <h4>{userList.find((x) => x.id == chirp.user_id).handle}</h4>
+          )}
           <div>
             <p>{chirp.body}</p>
             <div>
               <p>
-                {chirp.location} at {chirp.created_at}
+                {chirp.location} at{" "}
+                {new Date(chirp.created_at).toLocaleString()}
               </p>
             </div>
           </div>
@@ -50,18 +69,13 @@ const Chirp = (props: { chrips: IChirps; isAdmin: boolean }) => {
         {props.isAdmin && (
           <div>
             {" "}
-            <button
-              type="button"
-              disabled={!props.isAdmin}
-              className="btn btn-info"
-            >
+            <button type="button" className="btn btn-info">
               Edit
             </button>
             <button
               type="button"
-              disabled={!props.isAdmin}
               className="btn btn-danger"
-              onClick={(e) => deleteChirp(e)}
+              onClick={() => deleteChirp(chirp.id)}
             >
               Delete
             </button>

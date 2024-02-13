@@ -4,10 +4,12 @@ import Home from "./components/home";
 import ChirpDetails from "./components/chirpDetails";
 import NewChirpForm from "./components/newChirpForm";
 import Admin from "./components/admin";
+import Navbar from "./components/navbar";
 
 const App = () => {
   return (
     <BrowserRouter>
+    <Navbar></Navbar>
       <Routes>
         <Route path="/chirps" element={<Home></Home>}></Route>
         <Route

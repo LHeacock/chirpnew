@@ -30,7 +30,6 @@ const Home = () => {
 
   return (
     <div className="container-fluid">
-      <Navbar></Navbar>
       <div className="row">{generateChirps()}</div>
     </div>
   );

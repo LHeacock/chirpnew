@@ -20,6 +20,14 @@ const Navbar = () => {
       >
         Create
       </Link>
+      <Link
+        className="btn btn-primary btn-lg active"
+        role="button"
+        aria-pressed="true"
+        to={"/admin"}
+      >
+        Admin
+      </Link>
     </div>
   );
 };
